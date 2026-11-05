@@ -1,8 +1,21 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { InputPassword } from "@/components/ui/input-password";
 import { getErrorMessage } from "@/lib/error";
 import { LoginInput, loginSchema } from "@/schema/authSchema";
 import { useLoginMutation } from "@/store/feature/authApi";
@@ -35,54 +48,47 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted/30 px-4">
-      <div className="w-full max-w-md space-y-8 p-8 bg-background rounded-xl shadow-lg border">
-        <div className="text-center space-y-2">
-          <h1 className="text-3xl font-bold tracking-tight">Welcome Back</h1>
-          <p className="text-muted-foreground">
+    <div className="flex justify-center items-center h-screen">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">Welcome Back</CardTitle>
+          <CardDescription>
             Enter your credentials to access your account
-          </p>
-        </div>
+          </CardDescription>
+        </CardHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input
-                id="phone"
-                {...register("phone")}
-                placeholder="01XXXXXXXXX"
-                className={errors.phone ? "border-destructive" : ""}
-              />
-              {errors.phone && (
-                <p className="text-xs text-destructive">
-                  {errors.phone.message}
-                </p>
-              )}
-            </div>
+        <CardContent>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="phone">Phone Number</FieldLabel>
+                <Input
+                  id="phone"
+                  {...register("phone")}
+                  placeholder="Enter your phone number"
+                  error={!!errors.phone}
+                />
+                <FieldError errors={[errors.phone]} />
+              </Field>
 
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                {...register("password")}
-                placeholder="••••••••"
-                className={errors.password ? "border-destructive" : ""}
-              />
-              {errors.password && (
-                <p className="text-xs text-destructive">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-          </div>
+              <Field>
+                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <InputPassword
+                  id="password"
+                  {...register("password")}
+                  placeholder="Enter your password"
+                  error={!!errors.password}
+                />
+                <FieldError errors={[errors.password]} />
+              </Field>
+            </FieldGroup>
 
-          <Button type="submit" className="w-full" isLoading={isLoading}>
-            Sign In
-          </Button>
-        </form>
-      </div>
+            <Button type="submit" className="w-full mt-5" isLoading={isLoading}>
+              Sign In
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 }
