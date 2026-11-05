@@ -1,11 +1,7 @@
-'use client';
+"use client";
 
-import { ReduxProvider } from './ReduxProvider';
+import { ReduxProvider } from "./ReduxProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  return (
-    <ReduxProvider>
-      {children}
-    </ReduxProvider>
-  );
+  return <ReduxProvider>{children}</ReduxProvider>;
 }
