@@ -4,6 +4,7 @@ export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_APP_API_URL,
+    credentials: "include",
     prepareHeaders: (headers) => {
       const tenantId = process.env.NEXT_PUBLIC_APP_TENANT_ID;
       if (tenantId) {
@@ -14,5 +15,16 @@ export const baseApi = createApi({
     },
   }),
   endpoints: () => ({}),
-  tagTypes: ["User"],
+  tagTypes: [
+    "User",
+    "Product",
+    "Supplier",
+    "Purchase",
+    "Order",
+    "Customer",
+    "Expense",
+    "Transaction",
+    "Target",
+    "Dashboard",
+  ],
 });

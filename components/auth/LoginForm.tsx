@@ -20,13 +20,16 @@ import { getErrorMessage } from "@/lib/error";
 import { LoginInput, loginSchema } from "@/schema/authSchema";
 import { useLoginMutation } from "@/store/feature/authApi";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
+import { Alert, AlertDescription } from "../ui/alert";
 
 export default function LoginForm() {
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
+  const [error, setError] = useState<string | null>(null);
 
   const {
     register,
@@ -38,11 +41,11 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginInput) => {
     try {
+      setError(null);
       await login(data).unwrap();
-      toast.success("Welcome back!");
       router.push("/dashboard");
     } catch (error: unknown) {
-      toast.error(getErrorMessage(error));
+      setError(getErrorMessage(error));
     }
   };
 
@@ -88,6 +91,12 @@ export default function LoginForm() {
             </Button>
           </FieldGroup>
 
+          {error && (
+            <Alert variant="destructive" className="border-destructive/40">
+              <CircleAlert />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           <Button
             type="submit"
             className="w-full mt-5"

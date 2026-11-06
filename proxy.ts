@@ -4,7 +4,7 @@ export function proxy(req: NextRequest) {
   const hasToken = req.cookies.has("token");
   const { pathname } = req.nextUrl;
 
-  if (pathname.startsWith("/dashboard") && !hasToken) {
+  if ((pathname.startsWith("/dashboard") || pathname === "/") && !hasToken) {
     return NextResponse.redirect(new URL("/auth/login", req.url));
   }
   if (pathname.startsWith("/auth") && hasToken) {
@@ -14,5 +14,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/auth/:path*"],
+  matcher: ["/:path*", "/auth/:path*"],
 };
