@@ -1,5 +1,4 @@
 import {
-  Product,
   ProductListResponse,
   ProductQueryParams,
   SingleProductResponse,
@@ -19,7 +18,10 @@ export const productApi = baseApi.injectEndpoints({
           ? [
               { type: "Product" as const, id: "LIST" },
               ...(Array.isArray(result.data)
-                ? result.data.map((p) => ({ type: "Product" as const, id: p.id }))
+                ? result.data.map((p) => ({
+                    type: "Product" as const,
+                    id: p.id,
+                  }))
                 : (result.data?.products || []).map((p) => ({
                     type: "Product" as const,
                     id: p.id,
@@ -60,20 +62,32 @@ export const productApi = baseApi.injectEndpoints({
       ],
     }),
 
-    deleteProduct: builder.mutation<{ success: boolean; message: string }, number | string>({
+    deleteProduct: builder.mutation<
+      { success: boolean; message: string },
+      number | string
+    >({
       query: (id) => ({
         url: `/product/delete/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [{ type: "Product", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Product", id: "LIST" },
+        { type: "Product", id: "TRASH" },
+      ],
     }),
 
-    restoreProduct: builder.mutation<{ success: boolean; message: string }, number | string>({
+    restoreProduct: builder.mutation<
+      { success: boolean; message: string },
+      number | string
+    >({
       query: (id) => ({
         url: `/product/restore/${id}`,
         method: "PUT",
       }),
-      invalidatesTags: [{ type: "Product", id: "LIST" }],
+      invalidatesTags: [
+        { type: "Product", id: "LIST" },
+        { type: "Product", id: "TRASH" },
+      ],
     }),
 
     getTrashProducts: builder.query<ProductListResponse, void>({

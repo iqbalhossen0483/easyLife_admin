@@ -22,9 +22,14 @@ import Link from "next/link";
 type Props = {
   user: User;
   onLogout: () => Promise<void>;
+  isLoggingOut: boolean;
 };
 
-export default function AppSidebarFooter({ onLogout, user }: Props) {
+export default function AppSidebarFooter({
+  onLogout,
+  user,
+  isLoggingOut,
+}: Props) {
   const { isMobile } = useSidebar();
 
   return (
@@ -89,6 +94,7 @@ export default function AppSidebarFooter({ onLogout, user }: Props) {
               {/* Sign Out Action */}
               <DropdownMenuGroup>
                 <DropdownMenuItem
+                  disabled={isLoggingOut}
                   variant="destructive"
                   onClick={onLogout}
                   className="cursor-pointer gap-2"

@@ -37,7 +37,6 @@ export const authApi = baseApi.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log("result", result);
           dispatch(
             setAuth({
               database: result.data.data.database,
@@ -56,11 +55,7 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
       }),
       async onQueryStarted(arg, { dispatch }) {
-        try {
-          dispatch(logout());
-        } catch {
-          dispatch(logout());
-        }
+        dispatch(logout());
       },
     }),
   }),
