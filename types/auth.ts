@@ -1,3 +1,5 @@
+import "next-auth";
+import "next-auth/jwt";
 import { BaseApiResponse } from "./index";
 
 export type UserRole = "super_admin" | "admin" | "store_manager" | "sales_man";
@@ -55,7 +57,21 @@ export type LogoutResponse = {
   message: string;
 };
 
-export type LoginPayload = {
-  phone: string;
-  password: string;
-};
+declare module "next-auth" {
+  interface User {
+    token?: string;
+    phone?: string;
+    designation?: string;
+  }
+  interface Session {
+    accessToken?: string;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    accessToken?: string;
+    phone?: string;
+    designation?: string;
+  }
+}

@@ -1,16 +1,12 @@
-"use client";
-import { useAppSelector } from "@/store";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAppSelector((state) => state.auth);
-  const router = useRouter();
+const Layout = async ({ children }: { children: React.ReactNode }) => {
+  const session = await auth();
 
-  useEffect(() => {
-    if (user) router.push("/dashboard");
-  }, [router, user]);
-
+  if (session?.user) {
+    redirect("/dashboard");
+  }
   return children;
 };
 

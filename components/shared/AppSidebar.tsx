@@ -5,7 +5,8 @@ import { Sidebar } from "@/components/ui/sidebar";
 import { getErrorMessage } from "@/lib/error";
 import { useAppSelector } from "@/store";
 import { useLogoutMutation } from "@/store/feature/authApi";
-import { usePathname, useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { toast } from "sonner";
 import AppSidebarContent from "./AppSidebarContent";
 import AppSidebarHeader from "./AppSidebarHeader";
@@ -14,12 +15,11 @@ export default function AppSidebar() {
   const { user, database } = useAppSelector((state) => state.auth);
   const [logOut, { isLoading }] = useLogoutMutation();
   const pathname = usePathname();
-  const router = useRouter();
 
   const handleLogout = async () => {
     try {
+      await signOut({ callbackUrl: "/auth/login" });
       await logOut().unwrap();
-      router.push("/auth/login");
     } catch (error) {
       toast.error(getErrorMessage(error));
     }

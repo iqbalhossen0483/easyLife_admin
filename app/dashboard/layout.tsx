@@ -1,10 +1,22 @@
+import { auth } from "@/auth";
 import AuthProvider from "@/components/providers/AuthProvider";
 import AppSidebar from "@/components/shared/AppSidebar";
 import DashboardHeader from "@/components/shared/DashboardHeader";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode;
+};
+
+export default async function DashboardLayout({ children }: Props) {
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect("/auth/login");
+  }
+
   return (
     <AuthProvider>
       <SidebarProvider>

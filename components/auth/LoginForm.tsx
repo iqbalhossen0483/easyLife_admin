@@ -18,9 +18,9 @@ import { Input } from "@/components/ui/input";
 import { InputPassword } from "@/components/ui/input-password";
 import { getErrorMessage } from "@/lib/error";
 import { LoginInput, loginSchema } from "@/schema/authSchema";
-import { useLoginMutation } from "@/store/feature/authApi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -28,7 +28,7 @@ import { Alert, AlertDescription } from "../ui/alert";
 
 export default function LoginForm() {
   const router = useRouter();
-  const [login, { isLoading }] = useLoginMutation();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -41,11 +41,21 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginInput) => {
     try {
+      setIsLoading(true);
       setError(null);
-      await login(data).unwrap();
+
+      await signIn("credentials", {
+        phone: data.phone,
+        password: data.password,
+        redirect: false,
+      });
+
       router.push("/dashboard");
-    } catch (error: unknown) {
-      setError(getErrorMessage(error));
+      router.refresh();
+    } catch (err: unknown) {
+      setError(getErrorMessage(err));
+    } finally {
+      setIsLoading(false);
     }
   };
 
