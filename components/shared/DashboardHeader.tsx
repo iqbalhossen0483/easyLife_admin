@@ -2,22 +2,12 @@
 
 import { Badge } from "@/components/ui/badge";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { formatCurrency } from "@/lib/utils";
 import { useAppSelector } from "@/store";
 import { Bell, Building2, Wallet } from "lucide-react";
-import React from "react";
 
 export default function DashboardHeader() {
   const { user, database } = useAppSelector((state) => state.auth);
-
-  const formatCurrency = (val?: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "BDT",
-      maximumFractionDigits: 0,
-    })
-      .format(val || 0)
-      .replace("BDT", "৳");
-  };
 
   return (
     <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-md">

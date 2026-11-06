@@ -1,11 +1,13 @@
 import { BaseApiResponse } from "./index";
 
+export type UserRole = "super_admin" | "admin" | "store_manager" | "sales_man";
+
 export interface User {
   id: number;
   name: string;
   address: string;
   phone: string;
-  designation: "super_admin" | "admin" | "store_manager" | "sales_man";
+  designation: UserRole;
   profile: string | null;
   delivered_order: number;
   total_sale: number;

@@ -1,3 +1,4 @@
+import { UserRole } from "@/types/auth";
 import {
   ArrowLeftRight,
   Banknote,
@@ -15,14 +16,11 @@ import {
   Users,
 } from "lucide-react";
 
-export type UserRole = "super_admin" | "admin" | "store_manager" | "sales_man";
-
 export interface NavItem {
   title: string;
   href: string;
   icon: LucideIcon;
-  roles?: UserRole[];
-  badge?: string;
+  roles: UserRole[];
 }
 
 export interface NavGroup {
